@@ -13,17 +13,26 @@ final wasmLoader = WasmLoader(path: "assets/add_bg.wasm");
 // -----------------------------------------------------------------------------
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(); // required before calling wasmLoader.initialize()
   final initialized = await wasmLoader.initialize();
-  if (initialized) {
-    runApp(const MyApp());
+  if (!initialized) {
+    print("Failed to initialize wasnLoader");
   }
+  runApp(const MyApp());
 }
 
 // -----------------------------------------------------------------------------
 
 class MyApp extends StatelessWidget {
+  //
+  //
+  //
+  
   const MyApp({Key? key}) : super(key: key);
+  
+  //
+  //
+  //
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +44,7 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
           child: Builder(builder: (context) {
-            final result = wasmLoader.add(1234, 4321);
+            final result = initialized ? wasmLoader.add(1234, 4321): "Failed to initialize wasnLoader";
             return Text(
               "Result: $result",
               style: const TextStyle(
